@@ -29,9 +29,16 @@ int main() {
     i = 0;
     while (fin1 >> colors[i++]);
     fin1.close();
-    int test = main_menu();
-    cout << test;
 
+    //int test = main_menu();
+    //cout << test;
+    list<Goat> trip;   // a herd of goats is called a "trip" <-- fun fact
+    // create 3 Goat objects and insert them into the list & print
+    for (int i = 0; i < 3; i++) {
+        Goat tmp(names[rand() % SZ_NAMES], rand() % 20 + 1);
+        trip.push_back(tmp);
+    }
+    display_trip(trip);
 
     return 0;
 }
@@ -46,4 +53,17 @@ int main_menu() {
     cout << "Choice --> ";
     cin >> choice;
     return choice; 
+}
+
+int select_goat(list<Goat> trip) {
+    return 0;
+}
+
+void display_trip(list<Goat> trip) {
+    int count = 1;
+    for (Goat goat : trip) {
+        cout << "[" << count << "] " << goat.get_name() << " (" <<
+        goat.get_age() << ", " << goat.get_color() << ")" << endl;
+        count++; 
+    }
 }

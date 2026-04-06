@@ -1,3 +1,7 @@
+// COMSC-210 | Lab 23 | Ibrahim Bello
+// I understand that this commit won't be graded, but I want
+// to complete the assignment so the set assignment is easier.
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -16,7 +20,6 @@ int main_menu();
 
 int main() {
     srand(time(0));
-    bool again;
 
     // read & populate arrays for names and colors
     ifstream fin("names.txt");
@@ -30,17 +33,72 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    //int test = main_menu();
-    //cout << test;
-    list<Goat> trip;   // a herd of goats is called a "trip" <-- fun fact
-    // create 3 Goat objects and insert them into the list & print
-    for (int i = 0; i < 3; i++) {
-        Goat tmp(names[rand() % SZ_NAMES], rand() % 20 + 1);
-        trip.push_back(tmp);
-    }
-    display_trip(trip);
+    // Create list
+    list<Goat> trip;  
+
+    // Main menu logic
+    int choice;
+    do {
+        choice = main_menu();
+
+        switch (choice) {
+            case 1:
+                add_goat(trip, names, colors);
+                cout << "Goat added." << endl;
+                break;
+            case 2:
+                delete_goat(trip);
+                cout << "Goat deleted." << endl;
+                break;
+            case 3:
+                display_trip(trip);
+                break;
+            case 4:
+                cout << "Goodbye!" << endl;;
+                break;
+            default:
+                cout << "Invalid choice. Try again." << endl;
+        }
+
+    } while (choice != 4);
 
     return 0;
+}
+
+int select_goat(list<Goat> trip) {
+    int choice;
+    cout << "Choose a goat:" << endl;
+    display_trip(trip);
+    cout << endl;
+    cin >> choice;
+    return choice;
+}
+
+void delete_goat(list<Goat> &trip) {
+    cout << "Deleting a goat..." << endl;
+    int choice = select_goat(trip);
+    int i = 0;
+    for (auto it = trip.begin(); it != trip.end(); ++it, ++i) {
+        if (i == choice - 1) {
+            trip.erase(it);
+            return;
+        }
+    }
+}
+
+void add_goat(list<Goat> &trip, string nms[], string clrs[]) {
+    trip.emplace_back(nms[rand() % SZ_NAMES], rand() % MAX_AGE + 1,
+     clrs[rand() % SZ_COLORS]);
+}
+
+
+void display_trip(list<Goat> trip) {
+    int count = 1;
+    for (Goat goat : trip) {
+        cout << "[" << count << "] " << goat.get_name() << " (" <<
+        goat.get_age() << ", " << goat.get_color() << ")" << endl;
+        count++; 
+    }
 }
 
 int main_menu() {
@@ -53,17 +111,4 @@ int main_menu() {
     cout << "Choice --> ";
     cin >> choice;
     return choice; 
-}
-
-int select_goat(list<Goat> trip) {
-    return 0;
-}
-
-void display_trip(list<Goat> trip) {
-    int count = 1;
-    for (Goat goat : trip) {
-        cout << "[" << count << "] " << goat.get_name() << " (" <<
-        goat.get_age() << ", " << goat.get_color() << ")" << endl;
-        count++; 
-    }
 }

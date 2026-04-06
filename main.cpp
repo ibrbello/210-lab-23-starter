@@ -69,8 +69,12 @@ int select_goat(list<Goat> trip) {
     int choice;
     cout << "Choose a goat:" << endl;
     display_trip(trip);
-    cout << endl;
+    cout << "Choice --> ";
     cin >> choice;
+    if (choice < 1 || choice > trip.size()) {
+        cout << "Invalid selection. Try again." << endl;
+        select_goat(trip); // Recall function to show menu again
+    }
     return choice;
 }
 
@@ -93,6 +97,7 @@ void add_goat(list<Goat> &trip, string nms[], string clrs[]) {
 
 
 void display_trip(list<Goat> trip) {
+    cout << endl;
     int count = 1;
     for (Goat goat : trip) {
         cout << "[" << count << "] " << goat.get_name() << " (" <<
@@ -103,6 +108,7 @@ void display_trip(list<Goat> trip) {
 
 int main_menu() {
     int choice;
+    cout << endl;
     cout << "**** GOAT MANAGER 3001 ****" << endl;
     cout << "[1] Add a goat" << endl;
     cout << "[2] Delete a goat" << endl;
